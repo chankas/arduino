@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "author": "Manuel Chacana",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-nano", "id": "nano", "top": 43.2, "left": -29.3, "attrs": {} },
+    {
+      "type": "wokwi-led-ring",
+      "id": "ring1",
+      "top": -152.96,
+      "left": -123.61,
+      "attrs": { "pixels": "16" }
+    },
+    { "type": "wokwi-pir-motion-sensor", "id": "pir1", "top": -140, "left": 107.82, "attrs": {} }
+  ],
+  "connections": [
+    [ "ring1:GND", "nano:GND.1", "black", [ "v134.4", "h182.4" ] ],
+    [ "ring1:VCC", "nano:VIN", "red", [ "v124.8", "h182.4" ] ],
+    [ "ring1:DIN", "nano:6", "green", [ "v28.8", "h96" ] ],
+    [ "pir1:VCC", "nano:VIN", "red", [ "v172.8", "h-48" ] ],
+    [ "pir1:OUT", "nano:2", "green", [ "v76.8", "h-67.34" ] ],
+    [ "pir1:GND", "nano:GND.1", "black", [ "v182.4", "h-48.26" ] ]
+  ],
+  "dependencies": {}
+}

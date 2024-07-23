@@ -3,6 +3,10 @@
 // Configuración de la tira de LED
 #define PIN        6   // Pin al que está conectada la tira de LED
 #define NUMPIXELS  16  // Número de LEDs en la tira
+#define NUMTAIL    5   // Largo de la cola
+#define MAXLIGHT   255 // Máxima intencidad de luz
+#define MINLIGHT   100 // Mínima intencidad de luz
+#define ONLIGHT    180 // Intencidad 
 
 // Configuración del sensor PIR
 #define PIR_PIN    2   // Pin al que está conectado el sensor PIR
@@ -43,16 +47,16 @@ void loop() {
 
 // Función 1: Efecto cometa
 void cometEffect() {
-  for (int i = 0; i < NUMPIXELS + 5; i++) {
+  int decrement = (MAXLIGHT - MINLIGHT) / NUMTAIL;
+  for (int i = 0; i < NUMPIXELS + NUMTAIL; i++) {
     pixels.clear();
-    if (i < NUMPIXELS) pixels.setPixelColor(i, pixels.Color(255, 255, 255)); // LED más intenso
-    if (i > 0) pixels.setPixelColor(i - 1, pixels.Color(223, 233, 233)); // Cola
-    if (i > 1) pixels.setPixelColor(i - 2, pixels.Color(201, 201, 201)); // Cola
-    if (i > 2) pixels.setPixelColor(i - 3, pixels.Color(169, 169, 169)); // Cola
-    if (i > 3) pixels.setPixelColor(i - 4, pixels.Color(137, 137, 137)); // Cola
-    if (i > 4){
-      for (int j = 0; j < i - 4; j++){
-        pixels.setPixelColor(j, pixels.Color(105, 105, 105));  // Cola
+    for (int j = 0; j < NUMTAIL + 1; j++) {
+      int light = MAXLIGHT - decrement * j;
+      pixels.setPixelColor(i - j, pixels.Color(light, light, light)); // Cola
+    }
+    if (i > NUMTAIL){
+      for (int k = 0; k < i - NUMTAIL; k++){
+        pixels.setPixelColor(k, pixels.Color(MINLIGHT, MINLIGHT, MINLIGHT));
       }
     }
     pixels.show();
@@ -62,7 +66,7 @@ void cometEffect() {
 
 // Función 2: Iluminación gradual
 void gradualIllumination() {
-  for (int j = 105; j <= 180; j++) { // Incrementa la intensidad hasta la mitad (128)
+  for (int j = MINLIGHT; j <= ONLIGHT; j++) { // Incrementa la intensidad hasta la mitad (128)
     for (int i = 0; i < NUMPIXELS; i++) {
       pixels.setPixelColor(i, pixels.Color(j, j, j)); // Aumenta la intensidad
     }
@@ -70,6 +74,7 @@ void gradualIllumination() {
     delay(50);
   }
 }
+
 // Función 3: Detecta si aun se detecta movimiento
 int readSensor() {
   startTime = millis(); // Guarda el tiempo de inicio
